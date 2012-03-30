@@ -322,6 +322,11 @@ flashcache_uncacheable(struct cache_c *dmc, struct bio *bio)
 		/* Is the tgid in the blacklist ? */
 		dontcache = flashcache_find_pid_locked(dmc, current->tgid, 
 						       FLASHCACHE_BLACKLIST);
+		/* Is the Session ID in the blacklist ? */
+		if (!dontcache)
+			dontcache = flashcache_find_pid_locked(dmc, get_task_pid
+			(current, PIDTYPE_SID), FLASHCACHE_BLACKLIST);
+
 		/* 
 		 * If we found the tgid in the blacklist, is there a whitelist
 		 * exception entered for this thread ?
@@ -350,6 +355,11 @@ flashcache_uncacheable(struct cache_c *dmc, struct bio *bio)
 		/* Is the tgid in the whitelist ? */
 		dontcache = !flashcache_find_pid_locked(dmc, current->tgid, 
 							FLASHCACHE_WHITELIST);
+		/* Is the Session ID in the whitelist ? */
+		if (dontcache)
+			dontcache = !flashcache_find_pid_locked(dmc, get_task_pid
+			(current, PIDTYPE_SID), FLASHCACHE_WHITELIST);
+
 		/* 
 		 * If we found the tgid in the whitelist, is there a black list 
 		 * exception entered for this thread ?
