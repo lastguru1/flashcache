@@ -38,7 +38,7 @@
 
 void usage(char *pname)
 {
-	fprintf(stderr, "Usage: %s (-c | -a | -r) (-b pid |-w pid) ssd_devname \n", pname);
+	fprintf(stderr, "Usage: %s (-c | -a | -r) (-b pid |-w pid) cachedev \n", pname);
 	exit(1);
 }
 
